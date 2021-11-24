@@ -15,6 +15,13 @@ class TRegdUserDetails extends Eloquent {
         'email_id' => 'required|email|unique:t_regd_user_details',
         'mobile_number' => 'required|max:10|min:10|unique:t_regd_user_details',
         'institute_name' => 'required',
+        'updateprofile' => array(
+
+            'full_name' => 'required',
+            'email_id' => 'required|email',
+            'mobile_number' => 'required|max:10|min:10',
+            'institute_name' => 'required',
+        ),
     );
     public static $messages = array(
         't_board_details_id.required' => 'Please Select Board Name',

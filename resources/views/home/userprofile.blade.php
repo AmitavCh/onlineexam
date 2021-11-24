@@ -19,7 +19,9 @@ use App\Http\Controllers\Controller;
         line-height:1.8;
 
     }
-
+    .active{
+        color:#fcb221;
+    } 
     .table-row {
         margin-top: 25px;
     }
@@ -149,8 +151,8 @@ use App\Http\Controllers\Controller;
                     <br>
                     <div class="userbtn"><i class="fa fa-bandcamp"></i> &nbsp;<a class="a1" href="{{URL('home/topiclist')}}"> Topic wise Test</a></div>
                     <br>
-                    <div class="userbtn"><i class="fa fa-bandcamp"></i> &nbsp;<a class="a1" href="{{URL('home/setlist')}}"> Set wise Test</a></div>
-                    <br>
+                    <!-- <div class="userbtn"><i class="fa fa-bandcamp"></i> &nbsp;<a class="a1" href="{{URL('home/setlist')}}"> Set wise Test</a></div>
+                    <br> -->
                     <p class="userbtn" style="margin-bottom: 25px;">
                         <a class="a1"  data-toggle="collapse" href="#collapseExample" role="button"  aria-expanded="false" aria-controls="collapseExample" style="text-decoration:none"><i class="fa fa-file"></i>&nbsp; Performance Report &nbsp;&nbsp;&nbsp;&nbsp;<i class="icofont-caret-down"></i></a>
                     </p>
@@ -158,10 +160,10 @@ use App\Http\Controllers\Controller;
                         <div class="card1">
                             <a href="{{URL('home/topicwiseperfomance')}}" class="userbtn-dropdown2 a1" style="color: #fcb221"><i class="fa fa-bar-chart" style="margin-left:30px; color: #fff"></i> &nbsp;Topic Wise</a>
                             <br>
-                            <a href="{{URL('home/setwiseperfomance')}}" class="userbtn-dropdown2 a1" style="margin-top: -15px; color: #fcb221"><i class="fa fa-bar-chart" style="margin-left:30px; color: #fff"></i> &nbsp;Set Wise</a>
+                            <!-- <a href="{{URL('home/setwiseperfomance')}}" class="userbtn-dropdown2 a1" style="margin-top: -15px; color: #fcb221"><i class="fa fa-bar-chart" style="margin-left:30px; color: #fff"></i> &nbsp;Set Wise</a> -->
                         </div>
                     </div>
-                    <div class="userbtn" style="border-top:"><i class="icofont-ui-user"></i> &nbsp;<a class="a1" href="{{URL('home/userprofile')}}">Profile</a></div>
+                    <div class="userbtn" style="border-top:"><i class="icofont-ui-user"></i> &nbsp;<a class="a1 active" href="{{URL('home/userprofile')}}">Profile</a></div>
                     <br>
                     <div class="userbtn"><i class="icofont-ui-password"></i> &nbsp;<a class="a1" href="{{URL('home/changepassword')}}"> Change Password</a></div>
                 </div>
@@ -172,9 +174,9 @@ use App\Http\Controllers\Controller;
                             <?php if(Auth::user()->profile_photo == ''){ ?>
                             <img class="profile-img" src="{{asset('public/frontend/assets/img/student-image.png')}}">
                             <?php }else{?>
-                            <img class="profile-img" src="{{asset('public/userphoto/'.Auth::user()->profile_photo)}}">
+                            <img class="profile-img" src="{{asset('public/userphoto/orig/'.Auth::user()->profile_photo)}}">
                             <?php }?>       
-                            <button class="btn-profile">Edit Profile</button>
+                            <button class="btn-profile"><a href="{{URL('home/updateprofile')}}" style="color:#fff">Edit Profile</a></button>
                         </div>
 
                         <div class="col-md-9 info-profile">

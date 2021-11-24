@@ -3,7 +3,19 @@
 Master | Topic Management
 @endsection
 @section('admin-content')
+<link rel="stylesheet" type="text/css" href="{{asset('public/js/plugins/bootstrap-fileinput/fileinput.min.css')}}">
+<style>
+    .file-preview {
 
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 100%;
+        margin-bottom: 5px;
+        height: 266px;
+
+    }
+</style>
 <section class="content">
     <div class="row">
         <div class="col-md-12">
@@ -125,7 +137,7 @@ Master | Topic Management
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group margine10bot">
                                     <label for="course_name">Correct Options</label>
                                     <select class="form-control" id="correct_option" name="TTopicWiseQuestionDetails[correct_option]" autocomplete="off"/>
@@ -143,7 +155,22 @@ Master | Topic Management
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-5">
+                                <div class="margine10bot">
+                                    <label for="exampleInputEmail1">Upload File(* Maximum File Size 1Mb)</label>
+                                    <input name="image" type="file" id="image_name" class="form-control" data-preview-file-type="any" multiple >								
+                                    <div id="app_photo_error"></div>
+                                    <div id="student_photo_valderror"></div>	
+                                    <span><br>
+                                        @if(isset($viewDataObj->image_photo) && $viewDataObj->image_photo != '')
+                                        <div class="controls" id="filePreviewDv"> 
+                                            <img src="{{asset('public/questionimage/orig/'.$viewDataObj->image_photo)}}" height="100">
+                                        </div>
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
                                 <div class="form-group margine10bot">
                                     <label for="course_name">Reference Link</label>
                                     @if(isset($viewDataObj->reference_link) && $viewDataObj->reference_link != '')
@@ -170,6 +197,29 @@ Master | Topic Management
 <script src="http://cdn.ckeditor.com/4.7.3/full-all/ckeditor.js"></script>
 <script src="{{asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('/vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
+<script src="{{asset('public/js/plugins/bootstrap-fileinput/fileinput.min.js')}}"></script>
+<script> 
+    var photo_selected_cnt          =	0;
+    var photo_name					=	'';
+    var photo_size					=	'';
+    var photo_download_name         =	'';
+    $(document).ready(function(){
+        $("#image_name").fileinput({ 
+            dropZoneTitle:'',
+            showPreview:true,
+            showRemove:false,
+            showCancel:false,
+            maxFileCount: 1,
+            elErrorContainer:'#app_photo_error',
+            uploadExtraData: {
+                    'X-CSRF-Token': csrfTkn,
+                    'upload_folder_name':'questionimage',
+                    'input_name_attr':'file_upload'
+            }
+        });
+
+    });
+</script>
 <script> 
     CKEDITOR.replace( 'question_details',{ allowedContent:true} );
     $('.textareas').ckeditor();

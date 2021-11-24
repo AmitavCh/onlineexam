@@ -112,7 +112,8 @@ use App\Http\Controllers\Controller;
 }
 .active{
     color:#fcb221;
-}    
+}  
+#topicWiseTestURL:hover{cursor:pointer;}  
 @media (max-width: 768px){
   .topic-wise{
         margin-top: 30px;
@@ -130,18 +131,50 @@ use App\Http\Controllers\Controller;
 </style>
 <main id="main">
     <form class="topic-wise2" style="background-color: #212959; border-radius: 5px; padding-top: 15px; padding-left: 10px;">
+        <p style="color:red;font-weight: bold;">* You can select upto two topics at a times to give test.</p>
         <div class="row" style="padding-left: 17px;">
+        
             <div class="form-group">
                 @foreach($responseObjArr as $key=>$val)
-                    <input type="checkbox"  id="t_topic_details_id" name="TTopicWiseExamDetails[t_topic_details_id]" value="{{$val->_id}}">
+                    <input type="checkbox"  id="t_topic_details_id" class="topicTypeChk stdcls notchecked" name="topicChk" value="{{$val->_id}}" onclick="topiccheck(this)">
                     <label>{{$val->topic_name}}</label><br/>
                 @endforeach
                 <br/>
-                <div><a class="btn-enquiry3" type="submit">Next</a></div>
+                <div><a class="btn-enquiry3" id="topicWiseTestURL" name="topicWiseTestURL"  onclick="selectTopicForGiveTest('{{Auth::user()->_id}}')">Next</a></div>
             </div>
             
         </div>
     </form>
 </main>
+<script>
+function topiccheck(ele){
+    if ($(ele).hasClass('notchecked')){
+    $('#topicWiseTestURL').removeClass('disabled');
+    $(ele).removeClass('notchecked');
+    $(ele).addClass('checked');
+    }else{
+    //$('#topicWiseTestURL').addClass('disabled');
+    $(ele).removeClass('checked');
+    $(ele).addClass('notchecked');
+    }
+}
+function selectTopicForGiveTest(userid){
+    var selected = [];
+    $('input[name="topicChk"]:checked').each(function() {
 
+        selected.push($(this).attr('value'));
+    });
+    var selected_chk_arr = $('input[name="topicChk"]:checked');
+    var topic_arr ;
+    if(selected_chk_arr.length < 1){
+        alert('Please Select At Least One Topic Check Box.');
+    }else if(selected_chk_arr.length > 2){
+        alert('Please Select Maximum 2 Topics To Give Test.');
+    }else{
+        student_arr = $('input[name="topicChk"]:checked');
+        window.location = baseUrl+'/home/regdusergiventopicwiseexam/'+userid+'?topicIdArr='+selected;
+    }
+
+}
+</script>
 @endsection

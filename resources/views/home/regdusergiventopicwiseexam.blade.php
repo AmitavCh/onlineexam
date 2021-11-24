@@ -48,12 +48,7 @@ use App\Http\Controllers\Controller;
     padding-bottom: 8px;
 }
 
-.topic-wise{
-    background-color: #212959; 
-    border-radius: 10px; 
-    padding-top: 15px;
-    padding-left: 10px;
-}
+
 .form-group {
     margin-bottom: 15px;
     width: 32%;
@@ -115,20 +110,34 @@ use App\Http\Controllers\Controller;
 }
 .active{
     color:#fcb221;
+}  
+.btn-enquiry{
+        background: #fcb221;
+        border: 0;
+        border-radius: 50px;
+        padding: 7px 24px;
+        color: #fff;
+        transition: 0.4s;
+        font-size:13px;
+        font-weight: bold;
+    } 
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 0;
 }    
 @media (max-width: 768px){
-  .topic-wise{
-        margin-top: 30px;
-        background-color: #212959; 
-        border-radius: 10px; 
-        padding-top: 15px;
-        padding-left: 10px;
-    }
+  
     .form-group {
         margin-bottom: 15px;
         width: 92%;
     }
-    
+    .profile-tab {
+    background-color: #212959;
+    border-radius: 5px;
+    height: 600px;
+    margin-top: 25px;
+    }
 }
 
 </style>
@@ -166,55 +175,23 @@ use App\Http\Controllers\Controller;
                     <br>
                     <div class="userbtn"><i class="icofont-ui-password"></i> &nbsp;<a class="a1" href="{{URL('home/changepassword')}}"> Change Password</a></div>
                 </div>
-                <div class="col-lg-9 mb-4" style="background-color: #fff;; border-radius: 5px; height: 325px;">
-                    
-                    <form class="topic-wise" style="background-color: #212959; border-radius: 5px; padding-top: 15px; padding-left: 10px;">
-                        <div class="row" style="padding-left: 17px;">
-                            <div class="form-group">
-                                <select class="form-control" id="t_subject_details_id" name="t_subject_details_id" onchange="getTopicNamesOfSelectedSubject(this.value);">
-                                    @foreach($responseObjArr as $key=>$val)
-                                        <option value="{{$val['_id']}}">{{$val['subject_name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="col-lg-9 mb-4 profile-tab" style="background-color: #212959; border-radius: 5px;">
+                <h3 class="title" style="color: #fff;">INSTRUCTION</h3><hr/>
+                <form class="topic-wise2" >
+                    <p>Total Selected Topic : <b><?php echo $topicCnt; ?></b></p>
+                    <p>Total Number Of Questions : <b>{{$qusCnt}}</b></p>
+                    <p>Each question carry 1 mark, no negative marks</p>
+                    <p><b>DO NOT</b> refresh the page</p>
+                    <p style="color:#FF0000;">All the best !!!!!</p>
+                    <div class="row" style="padding-left: 17px;">
+                        <div class="form-group">
+                            <div><a  href="{{URL('home/topic_by_question_selected_by_user/'.($TopicIds))}}" class="btn-enquiry">Start Exam</a></div>
                         </div>
-                    </form>
-                   
-                    <br>
-                    <div class="box-body">
-                        <div id="listingTable"></div>  
                     </div>
+                </form>
+                    
             </div>
     </div> 
    </section>
   </main>
-<script>
-$( document ).ready(function() {
-    $id = $('#t_subject_details_id').val();
-    getTopicNamesOfSelectedSubject($id);
-});
-function getTopicNamesOfSelectedSubject(id) {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-Token': csrfTkn
-        }
-    });
-    $.ajax({
-        url: baseUrl + '/home/topicnamesofselectedsubject',
-        type: 'post',
-        cache: false,
-        data: {
-            'id': id,
-        },
-        success: function (res) {
-            $('#loddingImage').hide();
-            $('#listingTable').html(res);
-        },
-        error: function (xhr, textStatus, thrownError) {
-            $('#loddingImage').hide();
-            alert('Something went to wrong.Please Try again later...');
-        }
-    });
-}
-</script>
 @endsection

@@ -680,6 +680,32 @@ class SettingController extends Controller {
                             ->where('t_topic_details_id', '=', $formData['TTopicWiseQuestionDetails']['t_topic_details_id'])
                             ->where('_id', '!=', $id)
                             ->count();
+
+                //for fetch image exist or not
+                $tableObjCnt5 = TTopicWiseQuestionDetails::where('image_photo', '!=', '')->where('_id', '=', $id);
+                $tableObjCnt6 = $tableObjCnt5->count();
+                $tableObjCnt7 = $tableObjCnt5->first();
+                $image = $request->file('image');
+                if ($tableObjCnt6 > 0) {
+                    $photoName = $tableObjCnt7->image_photo;
+                } else {
+                    $photoName = '';
+                }
+                //
+                if ($image != '') {
+                    $image_name = $image->getClientOriginalName();
+                    $fileExt  = $image->getClientOriginalExtension();
+                    $fileSize = $image->getSize();
+                    $photo_download_name= uniqid() . '_' . time() . '.' . $fileExt;
+                    $orig_file_path = public_path() . "/questionimage/orig";
+                    if (isset(Auth::user()->_id)) {
+                        $photoName = Auth::user()->_id . '_' . uniqid() . '.' . $fileExt;
+                    } else {
+                        $photoName = uniqid() . '.' . $fileExt;
+                    }
+                    $upload_success = $image->move($orig_file_path, $photoName, 100, 100);
+                }
+
                 if ($menu_data == 0) {
                     $menu = TTopicWiseQuestionDetails::find($id);
                     $menu->t_subject_details_id     = $formData['TTopicWiseQuestionDetails']['t_subject_details_id'];
@@ -692,6 +718,7 @@ class SettingController extends Controller {
                     $menu->option4                  = $formData['TTopicWiseQuestionDetails']['option4'];
                     $menu->correct_option           = $formData['TTopicWiseQuestionDetails']['correct_option'];
                     $menu->reference_link           = $reference_link;
+                    $menu->image_photo              = $photoName;
                     $menu->updated_at               = date('Y-m-d h:i:s');
                     $menu->save();
                     if ($menu) {
@@ -708,6 +735,21 @@ class SettingController extends Controller {
                             ->where('t_class_details_id', '=', $formData['TTopicWiseQuestionDetails']['t_class_details_id'])
                             ->where('t_topic_details_id', '=', $formData['TTopicWiseQuestionDetails']['t_topic_details_id'])
                             ->count();
+                $image = $request->file('image');
+                $photoName = '';
+                if ($image != '') {
+                    $image_name = $image->getClientOriginalName();
+                    $fileExt = $image->getClientOriginalExtension();
+                    $fileSize = $image->getSize();
+                    $photo_download_name = uniqid() . '_' . time() . '.' . $fileExt;
+                    $orig_file_path = public_path() . "/questionimage/orig";
+                    if (isset(Auth::user()->_id)) {
+                        $photoName = Auth::user()->_id . '_' . uniqid() . '.' . $fileExt;
+                    } else {
+                        $photoName = uniqid() . '.' . $fileExt;
+                    }
+                    $upload_success = $image->move($orig_file_path, $photoName, 100, 100);
+                }            
                 if ($menu_data == 0) {
                     $menu = new TTopicWiseQuestionDetails();
                     $menu->t_subject_details_id     = $formData['TTopicWiseQuestionDetails']['t_subject_details_id'];
@@ -720,6 +762,7 @@ class SettingController extends Controller {
                     $menu->option4                  = $formData['TTopicWiseQuestionDetails']['option4'];
                     $menu->correct_option           = $formData['TTopicWiseQuestionDetails']['correct_option'];
                     $menu->reference_link           = $reference_link;
+                    $menu->image_name               = $photoName;
                     $menu->is_active                = 'Y';
                     $menu->created_at               = date('Y-m-d h:i:s');
                     $menu->updated_at               = date('Y-m-d h:i:s');

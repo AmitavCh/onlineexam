@@ -9,6 +9,16 @@ Route::post('home/signup','HomeController@signup')->name('signup');
 Route::get('home/logout','HomeController@logout')->name('logout');
 Route::get('home/userprofile','HomeController@userprofile')->name('userprofile');
 Route::get('home/quickdemo','HomeController@quickdemo')->name('quickdemo');
+Route::get('home/regdusergiventopicwiseexam/{arr}','HomeController@regdusergiventopicwiseexam')->name('regdusergiventopicwiseexam');
+Route::get('home/updateprofile','HomeController@updateprofile')->name('updateprofile');
+Route::post('home/userUpdateProfile','HomeController@userUpdateProfile')->name('userUpdateProfile');
+Route::post('home/validateUserUpdateDetailsData','HomeController@validateUserUpdateDetailsData')->name('validateUserUpdateDetailsData');
+Route::get('home/topic_by_question_selected_by_user/{id}','HomeController@topicByQuestionSelectedByUser')->name('topicByQuestionSelectedByUser');
+Route::get('home/question_details_by_topic_selection','HomeController@questionDetailsByTopicSelection')->name('questionDetailsByTopicSelection');
+Route::post('home/saveselectedtopicanswer','HomeController@saveselectedtopicanswer')->name('saveselectedtopicanswer');
+Route::post('home/savesubmittopictest','HomeController@savesubmittopictest')->name('savesubmittopictest');
+Route::get('home/resultlistbyselectedtopicbyuser/{id}','HomeController@resultlistbyselectedtopicbyuser')->name('resultlistbyselectedtopicbyuser');
+Route::get('home/resultdetailsbytopicselection','HomeController@resultdetailsbytopicselection')->name('resultdetailsbytopicselection');
 
 Route::post('home/validateUserRegdDetailsData','HomeController@validateUserRegdDetailsData')->name('validateUserRegdDetailsData');
 Route::post('home/userRegistration','HomeController@userRegistration')->name('userRegistration');

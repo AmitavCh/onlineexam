@@ -98,6 +98,22 @@ class Controller extends BaseController
         }
         return $response;
     }
+    public static function getTopicName($id) {
+        $response = '';
+        $roleObj = TTopicDetails::select('topic_name')->where('_id','=',$id)->first();
+        if (isset($roleObj->topic_name) && $roleObj->topic_name != '') {
+            $response = $roleObj->topic_name;
+        }
+        return $response;
+    }
+    public static function getSubjectIdByTopicId($id) {
+        $response = '';
+        $roleObj = TTopicDetails::select('t_subject_details_id')->where('_id','=',$id)->first();
+        if (isset($roleObj->t_subject_details_id) && $roleObj->t_subject_details_id != '') {
+            $response = $roleObj->t_subject_details_id;
+        }
+        return $response;
+    }
     public static function getBoardNameByClassId($id) {
         $response = '';
         $roleObj = TClassDetails::select('t_board_details_id')->where('_id','=',$id)->first();
@@ -161,7 +177,7 @@ class Controller extends BaseController
 		if ($menuSubMenuObj) {
 			$menuSubmenuArr = $menuSubMenuObj->toArray();
         }
-		//echo'<pre>';print_r( $menuSubmenuArr);echo'</pre>';exit;
+		//echo'<pre>';print_r( $menuSubMenuObj);echo'</pre>';exit;
 		return $menuSubmenuArr;
 		
     }
@@ -247,6 +263,15 @@ class Controller extends BaseController
         $roleObj = TRegdUserDetails::select('institute_name')->where('_id','=',$id)->first();
         if (isset($roleObj->institute_name) && $roleObj->institute_name != '') {
             $response = $roleObj->institute_name;
+        }
+        return $response;
+    }
+
+    public static function getCorrectOptions($id){
+        $response = '';
+        $roleObj = TTopicWiseQuestionDetails::select('correct_option')->where('_id','=',$id)->first();
+        if (isset($roleObj->correct_option) && $roleObj->correct_option != '') {
+            $response = $roleObj->correct_option;
         }
         return $response;
     }
