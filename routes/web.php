@@ -8,6 +8,7 @@ Route::get('home/login','HomeController@login')->name('login');
 Route::post('home/signup','HomeController@signup')->name('signup');
 Route::get('home/logout','HomeController@logout')->name('logout');
 Route::get('home/userprofile','HomeController@userprofile')->name('userprofile');
+Route::get('home/topicwiseperfomance','HomeController@topicwiseperfomance')->name('topicwiseperfomance');
 Route::get('home/quickdemo','HomeController@quickdemo')->name('quickdemo');
 Route::get('home/regdusergiventopicwiseexam/{arr}','HomeController@regdusergiventopicwiseexam')->name('regdusergiventopicwiseexam');
 Route::get('home/updateprofile','HomeController@updateprofile')->name('updateprofile');

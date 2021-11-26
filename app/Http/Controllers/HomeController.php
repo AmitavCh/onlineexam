@@ -34,7 +34,9 @@ class HomeController extends Controller {
     public function index(Request $request) {
         return View::make('home.index');
     }
-
+    public function topicwiseperfomance(Request $request) {
+        return View::make('home.topicwiseperfomance');
+    }
     public function dashboard(Request $request) {
         return View::make('home.dashboard');
     }
