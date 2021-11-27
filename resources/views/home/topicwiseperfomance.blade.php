@@ -64,7 +64,7 @@ use App\Http\Controllers\Controller;
     transition: 0.4s;
     font-size:13px;
     font-weight: bold;
-    margin-top:4px;
+    margin-top:-6px;
 }
 
 .date{
@@ -84,7 +84,7 @@ use App\Http\Controllers\Controller;
     margin: 0;
     padding: 0;
 }
-
+input,date{color: black;}
 @media (max-width: 768px){
   .pad{
     margin: 25px;
@@ -98,6 +98,8 @@ use App\Http\Controllers\Controller;
     display:none;
 }
 </style>
+<script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
+<script type = "text/javascript"> google.charts.load('current', {packages: ['corechart']});</script>
 <main id="main">
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
@@ -132,99 +134,95 @@ use App\Http\Controllers\Controller;
                     <br>
                     <div class="userbtn"><i class="icofont-ui-password"></i> &nbsp;<a class="a1" href="{{URL('home/changepassword')}}"> Change Password</a></div>
                 </div>
-                <div class="col-lg-9 mb-4 content1">
-                  <div class="container pad">
+                <div class="col-lg-9 mb-4">
+                  <div class="pad">
                     <div class="row">
-                      <div class="col-md-3">
-                        <form class="date">
+                      <form class="date">
+                        <div class="col-md-4">
                           <label>From date:
                             <input type="date" name="party" min="1985-01-01" max="2024-12-31">
                           </label>
-                        </form>
-                      </div>
-                      <div class="col-md-3">
-                        <form class="date">
+                        </div>
+                        <div class="col-md-4">
                           <label>To date:
                             <input type="date" name="party" min="1985-01-01" max="2024-12-31">
                           </label>
-                        </form>
-                      </div>
-                      <div class="col-md-2">
-                        <button  class="buttn2">submit</button>
-                      </div>
+                        </div>
+                        <div class="col-md-2">
+                          <button  class="buttn2">submit</button>
+                        </div>
+                     </form>  
                     </div>
-                  </div>
-                    <div id="container"></div>
+                    <div id="chart_div" style="width: 800px; height: 340px; margin-top: 20px;"></div>
+                 </div>
                 </div>
-
-            </div>
 
           </div> 
    </section>
   </main>
-<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-cartesian-3d.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-ui.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- Template Main JS File -->
 <script>
+  google.charts.load('current', {'packages':['corechart', 'bar']});
+  google.charts.setOnLoadCallback(drawStuff);
+  function drawStuff() {
+    var button = document.getElementById('change-chart');
+    var chartDiv = document.getElementById('chart_div');
+    var arrayFromPHP = <?php echo json_encode($reportingFormat); ?>;
+    var week_data = arrayFromPHP;
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Subject');
+    data.addColumn('number', 'Mark');
+    //data.addColumn('string', 'Exam Date');
+    for (var i = 0; i < week_data.length; i++) {
+        data.addRow([week_data[i].topic_name, week_data[i].marks]);
+    }
+    var materialOptions = {
+      width: 900,
+      series: {
+        0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+        1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+      },
+      axes: {
+        y: {
+          distance: {label: 'Score'}, // Left y-axis.
+          brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
+        }
+      }
+    };
 
-  anychart.onDocumentReady(function () {
+    var classicOptions = {
+      width: 900,
+      series: {
+        0: {targetAxisIndex: 0},
+        1: {targetAxisIndex: 1}
+      },
+      title: 'Nearby galaxies - distance on the left, brightness on the right',
+      vAxes: {
+        // Adds titles to each axis.
+        0: {title: 'parsecs'},
+        1: {title: 'apparent magnitude'}
+      }
+    };
 
-  // data
-  var data = anychart.data.set([
-    ["Mathmatics", 90],
-    ["Physics", 72],
-    ["Biology", 56],
-    ["Chemistry", 81],
-    ["Geography", 85],
-    ["History", 66],
-    ["Economics", 45],
-    ["Civics", 21],
-    ["Hindi", 91],
-    ["English",71]
-    ]);
+    function drawMaterialChart() {
+      var materialChart = new google.charts.Bar(chartDiv);
+      materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+      button.innerText = 'Change to Classic';
+      button.onclick = drawClassicChart;
+    }
 
-  var dataSet1 = data.mapAs({x: 0, value: 1});
-  var dataSet2 = data.mapAs({x: 0, value: 2});
-  var dataSet3 = data.mapAs({x: 0, value: 3});
-
-  // set chart type
-  var chart = anychart.column3d();
-
-  // setting title
-  chart.title("Score Chart");
-
-    // enabled grids
-    chart.xGrid().enabled(true);
-    chart.yGrid().enabled(true);  
-
-  // set axes titles
-  chart.xAxis().title("Subject");
-  chart.yAxis().title("Score");
-
-    // enable the value stacking mode
-    chart.yScale().stackMode("value");
-
-    // configure tooltips
-    chart.tooltip().format("{%value}");
-
-  // configure labels on the y-axis
-  chart.yAxis().labels().format("{%value}");
-
-  // set data
-  var series1 = chart.column(dataSet1);
-  series1.name("Sales 2009");
-  var series2 = chart.column(dataSet2);
-  series2.name("Sales 2010");
-  var series3 = chart.column(dataSet3);
-  series3.name("Sales 2011");
-
-  // draw chart
-  chart.container("container");
-  chart.draw();
-});
-
+    function drawClassicChart() {
+      var arrayFromPHP = <?php echo json_encode($reportingFormat); ?>;
+      var week_data = arrayFromPHP;
+      var classicChart = new google.visualization.ColumnChart(chartDiv);
+      classicChart.draw(data, classicOptions);
+      button.innerText = 'Change to Material';
+      button.onclick = drawMaterialChart;
+    }
+    drawMaterialChart();
+  };
+  
 </script>
 
 @endsection

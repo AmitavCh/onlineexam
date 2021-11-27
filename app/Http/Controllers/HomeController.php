@@ -34,9 +34,7 @@ class HomeController extends Controller {
     public function index(Request $request) {
         return View::make('home.index');
     }
-    public function topicwiseperfomance(Request $request) {
-        return View::make('home.topicwiseperfomance');
-    }
+
     public function dashboard(Request $request) {
         return View::make('home.dashboard');
     }
@@ -611,5 +609,13 @@ class HomeController extends Controller {
                                       ->count();                                        
         //echo'<pre>';print_r($questionListObj);echo'</pre>';exit;
         return View::make('home.resultdetailsbytopicselection', compact('questionListObj','total_number_of_questions','correctAnsObj','wrongAnsObj'));
+    }
+    public function topicwiseperfomance(Request $request) {
+        $reportingFormat              =  TUserMark::where('user_id','=',Auth::user()->_id)
+                                      ->select('topic_name','marks','exam_submit_date')
+                                      ->orderBy('graph_date','desc')
+                                      ->get();
+        
+        return View::make('home.topicwiseperfomance',compact('reportingFormat'));
     }
 }
